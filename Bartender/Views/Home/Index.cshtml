@@ -1,121 +1,19 @@
-﻿@model Bartender.Models.DrinkMenu
-@{
-    ViewData["Title"] = "Home Page";
-}
-<div class="container">
-    <table class="table table-bordered" id="drinkMenuTable" style="margin-top:50px">
-        <tr>
-            <th>Drink Name</th>
-            <th>Alcohol Content</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Request Drink</th>
-        </tr>
-        @if(Model.Beverages.Count > 0) { 
-        @for (int i = 0; i < Model.Beverages.Count; i++)
-        {
-        <tr>
-            <td>@Model.Beverages[i].Name</td>
-            <td>@Model.Beverages[i].AlcContent</td>
-            <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
-            <td>
-                <button onclick="viewDescription(@i)" id="desc+@i" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">View Description</button>
-            </td>            
-            <td>
-                <button onclick="getValue(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
-            </td>
+﻿@model BartenderModel
 
-        </tr>
-                }
-                }
-        </table>
-</div>
-
-<!-- Request Modal -->
-<div class="modal fade" id="requestDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Request Drink</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <input id="requestorName" type="text" class="form-control" placeholder="Enter Name">
-                    </div>                   
-                    <div class="form-group">
-                        <select id="drinkQuantity" onchange="drinkQuant()">
-                            <option>Select Quantity</option>
-                            @for (int i = 1; i < 11; i++)
-                            {
-                                <option id="drink+@i">@i Drink(s)</option>
-
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <table class="table table-bordered" id="drinkTable"style="margin-top:10px">
-                            <tr>
-                                <th>Drink Cost</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                            </tr> 
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </table>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="requestDrink()">Request</button>
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+<center><h2>Welcome to Litty Bar</h2></center>
+<div class="container" style="border:solid">
+    <div class="col-sm-6">
+        <h4 style="margin-left:15px">Customers Please Click below to view Menu</h4>
+        <a href="Home/Menu">
+            <img id="barPic" src="~/images/best-melbourne-bars.jpg" />
+        </a>
+    </div>
+    <div class="col-sm-6">
+        <center><h4>Bartender's Please SignIn Below</h4></center>
+        <form id="signIn">
+            <input style="margin-top:20px" asp-for="Username" class="form-control" placeholder="Username" required autofocus>
+            <input style="margin-top:20px" asp-for="Password" type="password" class="form-control" placeholder="Password" required autofocus>
+            <button style="margin-top:80px" class="btn btn-lg btn-secondary btn-block" type="submit">Sign In</button>
+        </form>
     </div>
 </div>
-
-<!-- Description Modal -->
-<div class="modal fade" id="viewDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Drink Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <p id="description"></p>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $('#requestDrink').on('shown.bs.modal', function () {
-    });
-    $('#viewDescription').on('shown.bs.modal', function () {
-    });
-    function drinkQuant() {
-        var quantity = parseInt(document.getElementById("drinkQuantity").value);
-        var costStr = document.getElementById("cost+" + 2).innerText;
-        var costSt = document.getElementById("cost+" + 2).value;
-        var cost = costStr.substring(2);
-    }
-    function getValue(ev) {
-        $("#drinkTable").find("tbody").find("tr:eq(1)").find("td:eq(0)").innerText("Hello");
-    }
-    function requestDrink(ev) {
-    }
-    function viewDescription(ev) {
-        var desc = document.getElementById("desc+" + ev).value
-        document.getElementById("description").innerText = desc;
-    }
-</script>

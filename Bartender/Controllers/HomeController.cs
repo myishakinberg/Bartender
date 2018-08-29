@@ -12,14 +12,18 @@ namespace Bartender.Controllers
     {
         public IActionResult Index()
         {
+            BartenderModel bartender = new BartenderModel();
+            return View(bartender);
+        }
+        public IActionResult Menu()
+        {
             DrinkMenu menu = new DrinkMenu();
             return View(menu);
         }
-
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-            return View();
+            DrinkMenu menu = new DrinkMenu();
+            return View(menu);
         }
 
         public IActionResult Contact()

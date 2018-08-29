@@ -41,3 +41,14 @@
     font-size:24px;
     text-align: center;
 }
+#signIn{
+    border:solid;
+    padding:10px
+}
+.container{
+    padding:10px;
+}
+#barPic{
+    width:400px;
+    height: 300px;
+}

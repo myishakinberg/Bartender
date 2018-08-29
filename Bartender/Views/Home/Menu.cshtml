@@ -1,0 +1,134 @@
+﻿@model Bartender.Models.DrinkMenu
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container">
+    <table class="table table-bordered" id="drinkMenuTable" style="margin-top:50px">
+        <tr>
+            <th>Drink Name</th>
+            <th>Alcohol Content</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Request Drink</th>
+        </tr>
+        @if (Model.Beverages.Count > 0)
+        {
+            @for (int i = 0; i < Model.Beverages.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Beverages[i].Name</td>
+                    <td>@Model.Beverages[i].AlcContent</td>
+                    <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
+                    <td>
+                        <button onclick="viewDescription(@i)" id="desc+@i" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">View Description</button>
+                    </td>
+                    <td>
+                        <button onclick="getPos(@i)"type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
+                    </td>
+
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<!-- Request Modal -->
+<div class="modal fade" id="requestDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request Drink</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input id="requestorName" type="text" class="form-control" placeholder="Enter Name" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="drinkQuantity" onchange="drinkQuant()">
+                            <option>Select Quantity</option>
+                            @for (int i = 1; i < 11; i++)
+                            {
+                                <option id="drink+@i">@i Drink(s)</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-bordered" id="drinkTable" style="margin-top:10px">
+                            <tr>
+                                <th>Drink Cost</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                            <tr>
+                                <th id="drinkCost"></th>
+                                <th id="drinkQu"></th>
+                                <th id="totalCost"></th>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="requestDrink()">Request</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Description Modal -->
+<div class="modal fade" id="viewDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Drink Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <p id="description"></p>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pos = -1;
+    $('#requestDrink').on('shown.bs.modal', function () {
+    });
+    $('#viewDescription').on('shown.bs.modal', function () {
+    });
+
+    function drinkQuant() {
+        if (pos != -1) {
+            var quantity = parseInt(document.getElementById("drinkQuantity").value);
+            document.getElementById("drinkQu").innerText = quantity;
+            var cost = parseInt(document.getElementById("drinkCost").innerText.substring(1));
+            var total = cost * quantity;
+            document.getElementById("totalCost").innerText = "$" + total;      
+            
+        }
+    }
+    function getPos(ev) {
+        var costStr = document.getElementById("cost+" + ev).innerText;
+        var cost = parseInt(costStr.substring(2));
+        document.getElementById("drinkCost").innerText = "$" + cost;      
+        pos = ev;
+
+        document.getElementById("drinkQu").innerText = " ";
+        document.getElementById("totalCost").innerText = " ";
+    }
+    function requestDrink() {
+    }
+    function viewDescription(ev) {
+        var desc = document.getElementById("desc+" + ev).value
+        document.getElementById("description").innerText = desc;
+    }
+</script>
