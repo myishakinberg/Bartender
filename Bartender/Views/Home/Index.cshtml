@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="container">
-    <table class="table table-bordered" style="margin-top:50px">
+    <table class="table table-bordered" id="drinkMenuTable" style="margin-top:50px">
         <tr>
             <th>Drink Name</th>
             <th>Alcohol Content</th>
@@ -17,12 +17,12 @@
         <tr>
             <td>@Model.Beverages[i].Name</td>
             <td>@Model.Beverages[i].AlcContent</td>
-            <td>$ @Model.Beverages[i].Cost</td>
+            <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
             <td>
-                <button onclick="viewDescription()" id="desc" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">Request Drink</button>
+                <button onclick="viewDescription(@i)" id="desc+@i" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">View Description</button>
             </td>            
             <td>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
+                <button onclick="getValue(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
             </td>
 
         </tr>
@@ -51,17 +51,22 @@
                             <option>Select Quantity</option>
                             @for (int i = 1; i < 11; i++)
                             {
-                                <option value="@i">@i Drink(s)</option>
+                                <option id="drink+@i">@i Drink(s)</option>
 
                             }
                         </select>
                     </div>
                     <div class="form-group">
-                        <table class="table table-bordered" style="margin-top:10px">
+                        <table class="table table-bordered" id="drinkTable"style="margin-top:10px">
                             <tr>
                                 <th>Drink Cost</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
+                            </tr> 
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </table>
                     </div>
@@ -100,12 +105,17 @@
     });
     function drinkQuant() {
         var quantity = parseInt(document.getElementById("drinkQuantity").value);
-        alert(quantity);
+        var costStr = document.getElementById("cost+" + 2).innerText;
+        var costSt = document.getElementById("cost+" + 2).value;
+        var cost = costStr.substring(2);
     }
-    function requestDrink() {
-
+    function getValue(ev) {
+        $("#drinkTable").find("tbody").find("tr:eq(1)").find("td:eq(0)").innerText("Hello");
     }
-    function viewDescription() {
-        document.getElementById("description").innerText = document.getElementById("desc").value;
+    function requestDrink(ev) {
+    }
+    function viewDescription(ev) {
+        var desc = document.getElementById("desc+" + ev).value
+        document.getElementById("description").innerText = desc;
     }
 </script>
