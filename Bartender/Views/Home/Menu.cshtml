@@ -16,7 +16,7 @@
             @for (int i = 0; i < Model.Beverages.Count; i++)
             {
                 <tr>
-                    <td>@Model.Beverages[i].Name</td>
+                    <td id="drink+@i">@Model.Beverages[i].Name</td>
                     <td>@Model.Beverages[i].AlcContent</td>
                     <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
                     <td>
@@ -45,7 +45,7 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <input id="requestorName" type="text" class="form-control" placeholder="Enter Name" required>
+                        <input id="customerName" type="text" class="form-control" placeholder="Enter Name" required>
                     </div>
                     <div class="form-group">
                         <select id="drinkQuantity" onchange="drinkQuant()">
@@ -101,6 +101,7 @@
 
 <script type="text/javascript">
     var pos = -1;
+    var drinkName = null;
     $('#requestDrink').on('shown.bs.modal', function () {
     });
     $('#viewDescription').on('shown.bs.modal', function () {
@@ -118,6 +119,7 @@
     }
     function getPos(ev) {
         var costStr = document.getElementById("cost+" + ev).innerText;
+        drinkName = document.getElementById("drink+" + ev).innerText;
         var cost = parseInt(costStr.substring(2));
         document.getElementById("drinkCost").innerText = "$" + cost;      
         pos = ev;
@@ -126,6 +128,18 @@
         document.getElementById("totalCost").innerText = " ";
     }
     function requestDrink() {
+        var customerName = document.getElementById("customerName").value;
+        var drinkQuantity = document.getElementById("drinkQu").innerText;
+        alert(drinkQuantity);
+        $.ajax({
+            type: "POST",
+            url: "AjaxCallForDrinkRequest?customerName=" + customerName + "&drinkName=" + drinkName + "&drinkQuantity=" + drinkQuantity,
+            success: function (response) {
+                alert(response);
+                $("#requestDrink").modal('hide');
+
+            }
+        });
     }
     function viewDescription(ev) {
         var desc = document.getElementById("desc+" + ev).value

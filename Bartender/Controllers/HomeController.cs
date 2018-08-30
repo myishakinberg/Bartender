@@ -37,5 +37,17 @@ namespace Bartender.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public string AjaxCallForDrinkRequest(string customerName, string drinkName, string drinkQuantity)
+        {
+            RequestedDrinks newOrder = new RequestedDrinks();
+            newOrder.CustomerName = customerName;
+            newOrder.DrinkName = drinkName;
+            newOrder.DrinkQuantity = Int32.Parse(drinkQuantity);
+
+            DrinkQueue drinkQueue = new DrinkQueue();
+            drinkQueue.Queue.Add(newOrder);
+            return ("Added To Queue");
+        }
     }
 }
