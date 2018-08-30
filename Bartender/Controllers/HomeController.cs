@@ -25,6 +25,10 @@ namespace Bartender.Controllers
         public IActionResult BartenderView()
         {
             BartenderModel bartender = new BartenderModel();
+            if(TempData["NewOrder"] != null)
+            {
+                bartender.BartenderQueue.Add(TempData["NewOrder"] as DrinkQueue);
+            }
             return View(bartender);
         }
 
@@ -33,16 +37,17 @@ namespace Bartender.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult AjaxCallForDrinkRequest(string customerName, string drinkName, string drinkQuantity)
+        public JsonResult AjaxCallForDrinkRequest(string customerName, string drinkName, string drinkQuantity)
         {
             DrinkQueue newOrder = new DrinkQueue();
             newOrder.CustomerName = customerName;
             newOrder.DrinkName = drinkName;
             newOrder.DrinkQuantity = Int32.Parse(drinkQuantity);
+            //TempData["NewOrder"] = newOrder;
 
             BartenderModel drinkQueue = new BartenderModel();
             drinkQueue.BartenderQueue.Add(newOrder);
-            return RedirectToAction("BartenderView", drinkQueue);
+            return(Json("Successfully Added to Queue"));
         }
     }
 }

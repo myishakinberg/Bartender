@@ -3,7 +3,7 @@
 
 }
 
-<h2>Welcome Back, please view your drink queue below.</h2>
+<h2 style="margin-top:50px">Welcome Back, please view your drink queue below.</h2>
 
 <div class="container">
     <table class="table table-bordered" id="queueTable" style="margin-top:50px">
@@ -13,6 +13,8 @@
             <th>Quantity</th>
             <th>Edit Order</th>
             <th>Remove Order</th>
+            <th>Mark Completed</th>
+
 
         </tr>
         @if (Model.BartenderQueue.Count > 0)
@@ -20,14 +22,20 @@
             @for (int i = 0; i < Model.BartenderQueue.Count; i++)
             {
                 <tr>
-                    <td>@Model.BartenderQueue[i].CustomerName</td>
-                    <td>@Model.BartenderQueue[i].DrinkName</td>
-                    <td>@Model.BartenderQueue[i].DrinkQuantity</td>
+                    <td id="customerName+@i">@Model.BartenderQueue[i].CustomerName</td>
+                    <td id="drinkName+@i">@Model.BartenderQueue[i].DrinkName</td>
+                    <td id="drinkQuantity+@i">@Model.BartenderQueue[i].DrinkQuantity</td>
                     <td>
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editDrink">Edit Order</button>
-                    </td>                    
+                        <button onclick="editOrder(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editDrink">Edit Order</button>
+                    </td>
                     <td>
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removeDrink">Remove Order</button>
+                        <button onclick="getPos(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removeDrink">Remove Order</button>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="completedOrder">
+                            <label class="form-check-label" for="exampleCheck1">Completed</label>
+                        </div>
                     </td>
                 </tr>
             }
@@ -36,7 +44,7 @@
 </div>
 
 <!-- Remove Drink Modal -->
-<div class="modal fade" id="viewDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="removeDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,8 +60,75 @@
         </div>
     </div>
 </div>
+<!-- Edit Order Modal -->
+<div class="modal fade" id="editDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="editModal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Order</h5>
+            </div>
+            <form>
+                <div style="margin:15px" class="form-group">
+                    <input id="customerName" type="text" class="form-control" placeholder="Enter Customer Name">
+                </div>
+                <div style="margin:15px" class="form-group">
+                    <select id="drinkName" onchange="drinkQuant()">
+                        <option>Select Quantity</option>
+                        <option id="drink+1">Mojito</option>
+                        <option id="drink+2">Sangria</option>
+                        <option id="drink+3">Bourbon Whiskey</option>
+                        <option id="drink+4">Champange Cocktail</option>
+                        <option id="drink+5">French 75</option>
+                    </select>
+                </div>
+                <div style="margin:15px" class="form-group">
+                    <input id="drinkQu" type="text" class="form-control">
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="updateOrder()">Update Order</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
+    var pos = -1;
     $('#removeDrink').on('shown.bs.modal', function () {
     });
+    $('#editDrink').on('shown.bs.modal', function () {
+    });
+
+    function editOrder(ev) {
+        pos = ev;
+        if (pos != -1) {
+            var customer = document.getElementById("customerName+" + ev).innerText;
+            var drink = document.getElementById("drinkName+" + ev).innerText;
+            var quantity = parseInt(document.getElementById("drinkQuantity+" + ev).innerText);
+
+            document.getElementById("customerName").placeholder = customer;
+            document.getElementById("drinkQu").placeholder = quantity;
+        }
+    }
+    function getPos(ev) {
+        pos = ev;
+    }
+    function updateOrder() {
+        var customerName = document.getElementById("customerName").value;
+        var drinkName = document.getElementById("drinkName").value;
+        var drinkQuantity = document.getElementById("drinkQu").value;
+
+        if (customerName != "") {
+            document.getElementById("customerName+" + pos).innerText = customerName;
+        }
+        if (drinkName != "") {
+            document.getElementById("drinkName+" + pos).innerText = drinkName;
+        }
+        if (drinkQuantity != "") {
+            document.getElementById("drinkQuantity+" + pos).innerText = parseInt(drinkQuantity);
+        }
+        $("#editDrink").modal('hide');
+    }
 </script>

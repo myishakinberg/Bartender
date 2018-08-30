@@ -108,8 +108,10 @@
     });
 
     function drinkQuant() {
+        var quantity = parseInt(document.getElementById("drinkQuantity").value);
+
         if (pos != -1) {
-            var quantity = parseInt(document.getElementById("drinkQuantity").value);
+            //var quantity = parseInt(document.getElementById("drinkQuantity").value);
             document.getElementById("drinkQu").innerText = quantity;
             var cost = parseInt(document.getElementById("drinkCost").innerText.substring(1));
             var total = cost * quantity;
@@ -136,6 +138,7 @@
             success: function (response) {
                 alert(response);
                 $("#requestDrink").modal('hide');
+                window.location.replace("BartenderView");
             }
         });
     }
