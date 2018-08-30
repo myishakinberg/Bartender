@@ -29,7 +29,7 @@
                         <button onclick="editOrder(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editDrink">Edit Order</button>
                     </td>
                     <td>
-                        <button onclick="getPos(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removeDrink">Remove Order</button>
+                        <button onclick="removeOrder(@i)" type="button" class="btn btn-secondary" >Remove Order</button>
                     </td>
                     <td>
                         <div class="form-check">
@@ -41,24 +41,6 @@
             }
         }
     </table>
-</div>
-
-<!-- Remove Drink Modal -->
-<div class="modal fade" id="removeDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Remove Drink</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <h4></h4>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- Edit Order Modal -->
 <div class="modal fade" id="editDrink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -96,8 +78,6 @@
 
 <script type="text/javascript">
     var pos = -1;
-    $('#removeDrink').on('shown.bs.modal', function () {
-    });
     $('#editDrink').on('shown.bs.modal', function () {
     });
 
@@ -112,8 +92,16 @@
             document.getElementById("drinkQu").placeholder = quantity;
         }
     }
-    function getPos(ev) {
+    function removeOrder(ev) {
         pos = ev;
+
+        if (ev == 0) {
+            ev = ev + 1;
+        }
+        $("#queueTable").find("tr:eq(" + ev + ")").remove();
+        if (@Model.BartenderQueue.Count == ev) {
+            $("#queueTable").find("tr:last").remove();
+        }
     }
     function updateOrder() {
         var customerName = document.getElementById("customerName").value;
