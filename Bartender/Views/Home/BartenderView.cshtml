@@ -1,0 +1,59 @@
+﻿@model Bartender.Models.BartenderModel
+@{
+
+}
+
+<h2>Welcome Back, please view your drink queue below.</h2>
+
+<div class="container">
+    <table class="table table-bordered" id="queueTable" style="margin-top:50px">
+        <tr>
+            <th>Customer Name</th>
+            <th>Drink Name</th>
+            <th>Quantity</th>
+            <th>Edit Order</th>
+            <th>Remove Order</th>
+
+        </tr>
+        @if (Model.BartenderQueue.Count > 0)
+        {
+            @for (int i = 0; i < Model.BartenderQueue.Count; i++)
+            {
+                <tr>
+                    <td>@Model.BartenderQueue[i].CustomerName</td>
+                    <td>@Model.BartenderQueue[i].DrinkName</td>
+                    <td>@Model.BartenderQueue[i].DrinkQuantity</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editDrink">Edit Order</button>
+                    </td>                    
+                    <td>
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removeDrink">Remove Order</button>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<!-- Remove Drink Modal -->
+<div class="modal fade" id="viewDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove Drink</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <h4></h4>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#removeDrink').on('shown.bs.modal', function () {
+    });
+</script>

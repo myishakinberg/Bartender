@@ -130,14 +130,12 @@
     function requestDrink() {
         var customerName = document.getElementById("customerName").value;
         var drinkQuantity = document.getElementById("drinkQu").innerText;
-        alert(drinkQuantity);
         $.ajax({
             type: "POST",
             url: "AjaxCallForDrinkRequest?customerName=" + customerName + "&drinkName=" + drinkName + "&drinkQuantity=" + drinkQuantity,
             success: function (response) {
                 alert(response);
                 $("#requestDrink").modal('hide');
-
             }
         });
     }

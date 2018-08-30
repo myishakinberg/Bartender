@@ -10,27 +10,22 @@ namespace Bartender.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
-            BartenderModel bartender = new BartenderModel();
-            return View(bartender);
+            return View();
         }
+        
         public IActionResult Menu()
         {
             DrinkMenu menu = new DrinkMenu();
             return View(menu);
         }
-        public IActionResult About()
-        {
-            DrinkMenu menu = new DrinkMenu();
-            return View(menu);
-        }
 
-        public IActionResult Contact()
+        public IActionResult BartenderView()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            BartenderModel bartender = new BartenderModel();
+            return View(bartender);
         }
 
         public IActionResult Error()
@@ -38,16 +33,16 @@ namespace Bartender.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public string AjaxCallForDrinkRequest(string customerName, string drinkName, string drinkQuantity)
+        public IActionResult AjaxCallForDrinkRequest(string customerName, string drinkName, string drinkQuantity)
         {
-            RequestedDrinks newOrder = new RequestedDrinks();
+            DrinkQueue newOrder = new DrinkQueue();
             newOrder.CustomerName = customerName;
             newOrder.DrinkName = drinkName;
             newOrder.DrinkQuantity = Int32.Parse(drinkQuantity);
 
-            DrinkQueue drinkQueue = new DrinkQueue();
-            drinkQueue.Queue.Add(newOrder);
-            return ("Added To Queue");
+            BartenderModel drinkQueue = new BartenderModel();
+            drinkQueue.BartenderQueue.Add(newOrder);
+            return RedirectToAction("BartenderView", drinkQueue);
         }
     }
 }
