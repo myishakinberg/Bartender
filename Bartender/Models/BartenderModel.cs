@@ -20,12 +20,12 @@ namespace Bartender.Models
  
             DrinkQueue Customer2 = new DrinkQueue();
             Customer2.CustomerName = "Tyrone";
-            Customer2.DrinkName = "Bourbon";
+            Customer2.DrinkName = "Bourbon Whiskey";
             Customer2.DrinkQuantity = 3;
 
             DrinkQueue Customer3 = new DrinkQueue();
             Customer3.CustomerName = "Jesse";
-            Customer3.DrinkName = "Champange";
+            Customer3.DrinkName = "Champange Cocktail";
             Customer3.DrinkQuantity = 9;
 
 

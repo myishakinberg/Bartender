@@ -4,31 +4,33 @@
 }
 <div class="container">
     <table class="table table-bordered" id="drinkMenuTable" style="margin-top:50px">
-        <tr>
-            <th>Drink Name</th>
-            <th>Alcohol Content</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Request Drink</th>
-        </tr>
-        @if (Model.Beverages.Count > 0)
-        {
-            @for (int i = 0; i < Model.Beverages.Count; i++)
+        <thead class="thead-dark">
+            <tr>
+                <th>Drink Name</th>
+                <th>Alcohol Content</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Request Drink</th>
+            </tr>
+        </thead>
+            @if (Model.Beverages.Count > 0)
             {
-                <tr>
-                    <td id="drink+@i">@Model.Beverages[i].Name</td>
-                    <td>@Model.Beverages[i].AlcContent</td>
-                    <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
-                    <td>
-                        <button onclick="viewDescription(@i)" id="desc+@i" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">View Description</button>
-                    </td>
-                    <td>
-                        <button onclick="getPos(@i)"type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
-                    </td>
+                @for (int i = 0; i < Model.Beverages.Count; i++)
+                {
+                    <tr>
+                        <td id="drink+@i">@Model.Beverages[i].Name</td>
+                        <td>@Model.Beverages[i].AlcContent</td>
+                        <td id="cost+@i" value="@i">$ @Model.Beverages[i].Cost</td>
+                        <td>
+                            <button onclick="viewDescription(@i)" id="desc+@i" value="@Model.Beverages[i].Description" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#viewDescription">View Description</button>
+                        </td>
+                        <td>
+                            <button onclick="getPos(@i)" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestDrink">Request Drink</button>
+                        </td>
 
-                </tr>
+                    </tr>
+                }
             }
-        }
     </table>
 </div>
 
@@ -136,7 +138,7 @@
             type: "POST",
             url: "AjaxCallForDrinkRequest?customerName=" + customerName + "&drinkName=" + drinkName + "&drinkQuantity=" + drinkQuantity,
             success: function (response) {
-                alert(response);
+                console.log(response);
                 $("#requestDrink").modal('hide');
                 window.location.replace("BartenderView");
             }
